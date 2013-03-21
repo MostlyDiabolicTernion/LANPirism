@@ -49,7 +49,7 @@ public class Game extends BasicGame implements KeyListener {
          AppGameContainer app = new AppGameContainer(new Game());
          app.setDisplayMode(800, 600, false);
          app.start();
-         System.out.println("LOL it works.");
+         System.out.println("LOL it works..!");
     }
     
     @Override
