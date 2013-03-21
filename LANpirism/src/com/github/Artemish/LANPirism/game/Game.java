@@ -1,4 +1,4 @@
-package com.github.Aretmish.LANPirism.game;
+package com.github.Artemish.LANPirism.game;
 
 import java.io.IOException;
 

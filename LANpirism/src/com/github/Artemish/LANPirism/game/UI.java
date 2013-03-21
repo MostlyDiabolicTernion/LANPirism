@@ -1,4 +1,4 @@
-package com.github.Aretmish.LANPirism.game;
+package com.github.Artemish.LANPirism.game;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
