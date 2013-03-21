@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 public class Entity {
 	
 	public Entity(boolean hasHealth, boolean canMove, boolean hasOwner,
-			float x, float y, String imagePath) throws SlickException {
+			float x, float y, String imagePath) {
 		
 		this.hasHealth = hasHealth;
 		this.canMove = canMove;
