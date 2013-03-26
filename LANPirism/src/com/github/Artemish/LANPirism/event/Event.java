@@ -1,4 +1,4 @@
-package com.github.Artemish.LANPirism.Event;
+package com.github.Artemish.LANPirism.event;
 
 public class Event {
 	
