@@ -11,8 +11,8 @@ public class EventHub {
 	
 	
 	
-	public static void notify(Event event) {
-		if (listeners.containsKey(event.getID())) {
+	public static void process(Event event) {
+		if (hasListener(event.getID())) {
 			listeners.get(event.getID()).notify(event);
 		}
 			

@@ -11,7 +11,9 @@ public class Trigger {
 		EventHub.addListener(cause.getID());
 	}
 	
-	
+	public void trigger() {
+		result.act();
+	}
 	
 	
 	
