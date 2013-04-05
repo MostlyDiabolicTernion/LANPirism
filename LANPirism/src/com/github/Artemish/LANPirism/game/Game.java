@@ -11,6 +11,10 @@ import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.SlickException;
 
 import com.github.Artemish.LANPirism.entity.Player;
+import com.github.Artemish.LANPirism.event.EventHub;
+import com.github.Artemish.LANPirism.event.Trigger;
+import com.github.Artemish.LANPirism.event.actions.SystemPrintAction;
+import com.github.Artemish.LANPirism.event.events.EnterKeyEvent;
  
 public class Game extends BasicGame implements KeyListener {
 	
@@ -33,6 +37,8 @@ public class Game extends BasicGame implements KeyListener {
         		gameMap.scale * gameMap.tiles[0].length - 600);
         
     	gameUI = new UI("LowerUI.png", "UpperUI.png");
+    	
+    	Trigger trigger = new Trigger(1, new SystemPrintAction("IT WORKS."));
     }
  
     @Override
@@ -49,13 +55,13 @@ public class Game extends BasicGame implements KeyListener {
          AppGameContainer app = new AppGameContainer(new Game());
          app.setDisplayMode(800, 600, false);
          app.start();
-         System.out.println("LOL it works..!");
+         System.out.println("Lol, it works!");
     }
     
     @Override
     public void keyPressed(int key, char c) {
         if (key == Input.KEY_ENTER) {
-            System.out.println("Enter key hit.");
+            EventHub.process(new EnterKeyEvent());
         } else if (key == Input.KEY_LEFT) {
             controller.horizontalScroll -= 1;
         } else if (key == Input.KEY_RIGHT) {

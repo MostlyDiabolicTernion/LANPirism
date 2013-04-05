@@ -1,20 +1,20 @@
 package com.github.Artemish.LANPirism.event;
 
-public class Trigger {
+public class Trigger  {
 	
-	public Event cause;
+	public int causeID;
 	public Action result;
+	public int triggerID;
 	
-	public Trigger(Event cause, Action result) {
-		this.cause = cause;
+	public Trigger(int causeID, Action result) {
+		this.causeID = causeID;
 		this.result = result;
-		EventHub.addListener(cause.getID());
+		triggerID = EventHub.getNewTriggerID();
+		EventHub.subscribe(this);
 	}
 	
-	public void trigger() {
-		result.act();
+	public void pull(Event event) {
+		result.act(event);
 	}
-	
-	
 	
 }
