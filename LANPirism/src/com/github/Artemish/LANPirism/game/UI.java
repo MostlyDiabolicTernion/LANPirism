@@ -26,8 +26,8 @@ public class UI {
 	}
 	
 	public void render (Graphics g) {
-		g.drawImage(upperHUD, 0, 0);
-		g.drawImage(lowerHUD, 0,600 - lowerHeight);
+		/* g.drawImage(upperHUD, 0, 0);
+		g.drawImage(lowerHUD, 0,600 - lowerHeight); */
 	}
 	
 	

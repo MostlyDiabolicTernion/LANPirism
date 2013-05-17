@@ -11,10 +11,15 @@ import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.SlickException;
 
 import com.github.Artemish.LANPirism.entity.Player;
+import com.github.Artemish.LANPirism.entity.prototype.units.Footman;
 import com.github.Artemish.LANPirism.event.EventHub;
 import com.github.Artemish.LANPirism.event.Trigger;
 import com.github.Artemish.LANPirism.event.actions.SystemPrintAction;
+import com.github.Artemish.LANPirism.event.actions.ZoomInAction;
+import com.github.Artemish.LANPirism.event.actions.ZoomOutAction;
 import com.github.Artemish.LANPirism.event.events.EnterKeyEvent;
+import com.github.Artemish.LANPirism.event.events.OKeyEvent;
+import com.github.Artemish.LANPirism.event.events.PKeyEvent;
  
 public class Game extends BasicGame implements KeyListener {
 	
@@ -33,12 +38,15 @@ public class Game extends BasicGame implements KeyListener {
     	try { gameMap = MapLoader.loadMap("Resources/map.txt"); }
     		catch (IOException e) { e.printStackTrace(); }
         
-    	controller = new Player(0,0, gameMap.scale * gameMap.tiles.length - 800,
-        		gameMap.scale * gameMap.tiles[0].length - 600);
+    	controller = new Player(0,0, gameMap.scale * gameMap.tiles.length - 1200,
+        		gameMap.scale * gameMap.tiles[0].length - 700);
         
     	gameUI = new UI("LowerUI.png", "UpperUI.png");
     	
-    	Trigger trigger = new Trigger(1, new SystemPrintAction("IT WORKS."));
+    	EventHub.addTrigger(new Trigger(1, new SystemPrintAction("Still works.")));
+    	EventHub.addTrigger(new Trigger(2, new ZoomInAction(gameMap)));
+    	EventHub.addTrigger(new Trigger(3, new ZoomOutAction(gameMap)));
+    	// gameMap.addEntity(new Footman(10,10));
     }
  
     @Override
@@ -47,13 +55,13 @@ public class Game extends BasicGame implements KeyListener {
     }
  
     public void render(GameContainer gc, Graphics g) throws SlickException {
-    	gameMap.render(g, controller.xWindow, controller.yWindow);
+    	gameMap.render(g, controller);
     	gameUI.render(g);
     }
     
     public static void main(String[] args) throws SlickException {
          AppGameContainer app = new AppGameContainer(new Game());
-         app.setDisplayMode(800, 600, false);
+         app.setDisplayMode(1200, 700, false);
          app.start();
          System.out.println("Lol, it works!");
     }
@@ -62,6 +70,10 @@ public class Game extends BasicGame implements KeyListener {
     public void keyPressed(int key, char c) {
         if (key == Input.KEY_ENTER) {
             EventHub.process(new EnterKeyEvent());
+        } else if (key == Input.KEY_O) {
+        	EventHub.process(new OKeyEvent());
+        } else if (key == Input.KEY_P) {
+        	EventHub.process(new PKeyEvent());
         } else if (key == Input.KEY_LEFT) {
             controller.horizontalScroll -= 1;
         } else if (key == Input.KEY_RIGHT) {

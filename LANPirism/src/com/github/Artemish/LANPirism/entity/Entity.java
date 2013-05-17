@@ -6,6 +6,17 @@ import org.newdawn.slick.SlickException;
 
 public class Entity {
 	
+	/**
+	 * Entity Superclass
+	 * 
+	 * @param hasHealth
+	 * @param canMove
+	 * @param hasOwner
+	 * @param x
+	 * @param y
+	 * @param imagePath
+	 */
+	
 	public Entity(boolean hasHealth, boolean canMove, boolean hasOwner,
 			float x, float y, String imagePath) throws SlickException {
 		
@@ -29,7 +40,17 @@ public class Entity {
 	
 	public boolean hasOwner;
 	
-	public void render(Graphics g) {
+	/**
+	 * Renders this entity, given the controlling player's X and Y window coordinates.
+	 * 
+	 * @param g
+	 * @param xWindow
+	 * @param yWindow
+	 */
+	
+	public void render(Graphics g, Player p, int scale) {
+		// if () ;
+		
 		g.drawImage(restImage, positionX, positionY);
 	}
 	
