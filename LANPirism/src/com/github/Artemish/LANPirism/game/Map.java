@@ -2,8 +2,8 @@ package com.github.Artemish.LANPirism.game;
 
 import java.util.ArrayList;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
+import java.awt.Color;
+import java.awt.Graphics;
 
 import com.github.Artemish.LANPirism.entity.Entity;
 import com.github.Artemish.LANPirism.entity.Player;

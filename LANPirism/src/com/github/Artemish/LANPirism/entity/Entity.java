@@ -1,8 +1,7 @@
 package com.github.Artemish.LANPirism.entity;
 
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import java.awt.Graphics;
+import java.awt.Image;
 
 public class Entity {
 	
@@ -18,14 +17,14 @@ public class Entity {
 	 */
 	
 	public Entity(boolean hasHealth, boolean canMove, boolean hasOwner,
-			float x, float y, String imagePath) throws SlickException {
+			float x, float y, String imagePath) {
 		
 		this.hasHealth = hasHealth;
 		this.canMove = canMove;
 		this.hasOwner = hasOwner;
 		this.positionX = x;
 		this.positionY = y;
-		this.restImage = new Image(imagePath);
+		
 	}
 	
 	public Image restImage;
@@ -51,7 +50,7 @@ public class Entity {
 	public void render(Graphics g, Player p, int scale) {
 		// if () ;
 		
-		g.drawImage(restImage, positionX, positionY);
+		// g.drawImage(restImage, positionX, positionY);
 	}
 	
 }
