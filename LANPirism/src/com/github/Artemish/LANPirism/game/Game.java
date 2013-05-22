@@ -9,9 +9,6 @@ import com.github.Artemish.LANPirism.event.Trigger;
 import com.github.Artemish.LANPirism.event.actions.SystemPrintAction;
 import com.github.Artemish.LANPirism.event.actions.ZoomInAction;
 import com.github.Artemish.LANPirism.event.actions.ZoomOutAction;
-import com.github.Artemish.LANPirism.event.events.EnterKeyEvent;
-import com.github.Artemish.LANPirism.event.events.OKeyEvent;
-import com.github.Artemish.LANPirism.event.events.PKeyEvent;
  
 public class Game  {
 	
