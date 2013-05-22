@@ -9,9 +9,11 @@ import com.github.Artemish.LANPirism.event.Trigger;
 import com.github.Artemish.LANPirism.event.actions.SystemPrintAction;
 import com.github.Artemish.LANPirism.event.actions.ZoomInAction;
 import com.github.Artemish.LANPirism.event.actions.ZoomOutAction;
-import com.github.Artemish.LANPirism.event.events.EnterKeyEvent;
-import com.github.Artemish.LANPirism.event.events.OKeyEvent;
-import com.github.Artemish.LANPirism.event.events.PKeyEvent;
+
+/*
+ * TODO Relocate code that manages interfaces to the game (this is pretty much all of it at the moment)
+ *      Game should represent a game (interaction between two players), no more
+ */
  
 public class Game  {
 	
