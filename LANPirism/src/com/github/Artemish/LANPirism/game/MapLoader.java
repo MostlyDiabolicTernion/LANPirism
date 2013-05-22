@@ -19,6 +19,6 @@ public class MapLoader {
 		
 		mapReader.close();
 		
-		return new Map(width, height, 64, tiles);
+		return new Map(width, height, 32, tiles);
 	}
 }

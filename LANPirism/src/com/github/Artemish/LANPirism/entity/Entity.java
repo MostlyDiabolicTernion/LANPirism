@@ -1,10 +1,20 @@
 package com.github.Artemish.LANPirism.entity;
 
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import java.awt.Graphics;
+import java.awt.Image;
 
 public class Entity {
+	
+	/**
+	 * Entity Superclass
+	 * 
+	 * @param hasHealth
+	 * @param canMove
+	 * @param hasOwner
+	 * @param x
+	 * @param y
+	 * @param imagePath
+	 */
 	
 	public Entity(boolean hasHealth, boolean canMove, boolean hasOwner,
 			float x, float y, String imagePath) {
@@ -14,7 +24,7 @@ public class Entity {
 		this.hasOwner = hasOwner;
 		this.positionX = x;
 		this.positionY = y;
-		this.restImage = new Image(imagePath);
+		
 	}
 	
 	public Image restImage;
@@ -29,8 +39,18 @@ public class Entity {
 	
 	public boolean hasOwner;
 	
-	public void render(Graphics g) {
-		g.drawImage(restImage, positionX, positionY);
+	/**
+	 * Renders this entity, given the controlling player's X and Y window coordinates.
+	 * 
+	 * @param g
+	 * @param xWindow
+	 * @param yWindow
+	 */
+	
+	public void render(Graphics g, Player p, int scale) {
+		// if () ;
+		
+		// g.drawImage(restImage, positionX, positionY);
 	}
 	
 }
