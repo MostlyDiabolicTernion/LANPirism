@@ -1,7 +1,11 @@
 package com.github.Artemish.LANPirism.game;
 
-import java.awt.Graphics;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.IOException;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import com.github.Artemish.LANPirism.entity.Player;
 import com.github.Artemish.LANPirism.event.EventHub;
@@ -10,7 +14,21 @@ import com.github.Artemish.LANPirism.event.actions.SystemPrintAction;
 import com.github.Artemish.LANPirism.event.actions.ZoomInAction;
 import com.github.Artemish.LANPirism.event.actions.ZoomOutAction;
  
-public class Game  {
+public class Game implements Runnable {
+	
+	public static final String NAME = "LANPirism";
+	public static final int SCREEN_WIDTH = 1280;
+	public static final int SCREEN_HEIGHT = 720;
+	public static final int SCREEN_SCALE = 4;
+	public static final int TICKS_PER_SEC = 60;
+	
+	private boolean running = false;
+	
+	public int gameTimeSeconds = 0;
+	
+	public GameApplet gameApplet;
+	
+	public GamePanel gameWindow;
 	
 	public Map gameMap;
 	
@@ -22,64 +40,104 @@ public class Game  {
     	
     }
     
-    public void init()  {
+    public void start() {
+    	running = true;
+    }
+    
+    public void stop() {
+    	running = false;
+    }
+    
+    @Override
+	public void run() {
+		double nsPerTick = 1000000000.0 / 60.0;
+		double unprocessedSteps = 0.0;
+		long lastTime = System.nanoTime();
+		long now;
+		
+		initialize();
+		
+		while (running) {
+			now = System.nanoTime();
+			unprocessedSteps += (lastTime - now) / nsPerTick;
+			now = lastTime;
+			
+			if (unprocessedSteps >= 1) {
+				tick();
+				unprocessedSteps -= 1;
+			}
+			
+			// Only update every 2 ms
+			try { Thread.sleep(2);}
+			catch (InterruptedException e) {e.printStackTrace();}
+			
+			gameWindow.repaint();
+			
+		}
+	}
+    
+    public void registerWindow(GamePanel gameWindow) {
+    	this.gameWindow = gameWindow;   	
+    }
+    
+    public void initialize()  {
+    	
     	try { gameMap = MapLoader.loadMap("Resources/map.txt"); }
-    		catch (IOException e) { e.printStackTrace(); }
-        
-    	controller = new Player(0,0, gameMap.scale * gameMap.tiles.length - 1200,
-        		gameMap.scale * gameMap.tiles[0].length - 700);
+    	catch (IOException e) { e.printStackTrace(); }
         
     	gameUI = new UI("LowerUI.png", "UpperUI.png");
     	
     	EventHub.addTrigger(new Trigger(1, new SystemPrintAction("Still works.")));
     	EventHub.addTrigger(new Trigger(2, new ZoomInAction(gameMap)));
     	EventHub.addTrigger(new Trigger(3, new ZoomOutAction(gameMap)));
-    	// gameMap.addEntity(new Footman(10,10));
+    	
     }
     
-    public void update() {
+    public void tick() {
     	controller.updateWindow(1);
     }
- 
-    public void render(Graphics g) {
-    	gameMap.render(g, controller);
-    	gameUI.render(g);
+    
+    public void render() {
+    	
+    	
     }
     
-    public static void main(String[] args)  {
-         // 1200x700
-    }
+    public static void keyPressed(int key, char c) {}
+    public static void keyReleased(int key, char c) {}
     
-    public void keyPressed(int key, char c) {
-        /* if (key == Input.KEY_ENTER) {
-            EventHub.process(new EnterKeyEvent());
-        } else if (key == Input.KEY_O) {
-        	EventHub.process(new OKeyEvent());
-        } else if (key == Input.KEY_P) {
-        	EventHub.process(new PKeyEvent());
-        } else if (key == Input.KEY_LEFT) {
-            controller.horizontalScroll -= 1;
-        } else if (key == Input.KEY_RIGHT) {
-        	controller.horizontalScroll += 1;
-        } else if (key == Input.KEY_UP) {
-        	controller.verticalScroll -= 1;
-        } else if (key == Input.KEY_DOWN) {
-        	controller.verticalScroll += 1;
-        } else if (key == Input.KEY_ESCAPE) {
-        	
-        } */
-    }
+	
+	public void initializeWindow() {
+        JFrame frame = new JFrame("LANPirism!");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JLabel topGUI = new JLabel("Here's the top part of the GUI.");
+        JLabel bottomGUI = new JLabel("Here's the bottom.");
+        topGUI.setPreferredSize(new Dimension(800, 40));
+        bottomGUI.setPreferredSize(new Dimension(800, 40));
+        frame.getContentPane().add(topGUI, BorderLayout.PAGE_START);
+        frame.getContentPane().add(bottomGUI, BorderLayout.PAGE_END);
+        
+        gameWindow = new GamePanel();
+        gameWindow.setPreferredSize(new Dimension(800, 600));
+        
+        frame.getContentPane().add(gameWindow, BorderLayout.CENTER);
+        
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+        
+	}
     
-    public void keyReleased(int key, char c) {
-    	/* if (key == Input.KEY_LEFT) {
-    		controller.horizontalScroll += 1;
-    	} else if (key == Input.KEY_RIGHT) {
-    		controller.horizontalScroll -= 1;
-    	} else if (key == Input.KEY_UP) {
-    		controller.verticalScroll += 1;
-    	} else if (key == Input.KEY_DOWN) {
-        	controller.verticalScroll -= 1;
-        } */ 	
+    public static void main(String[] args) {
+    	final Game game = new Game();
+    	javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                game.initializeWindow();
+            }
+        });
+    	
+    	game.start();
+    	game.run();
     }
     
     
