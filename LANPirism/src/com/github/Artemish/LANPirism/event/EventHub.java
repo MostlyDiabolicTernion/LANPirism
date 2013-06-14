@@ -4,34 +4,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
+/*
+ * TODO Make all these members not static (so that instances of EventHub can be created)
+ */
 public class EventHub {
 	
-	static int latestTrigger = 0;
+	private static int latestTrigger = 0;
 	
-	// Here, the key is the eventID
+	// Maps eventIDs to EventListeners
 	public static HashMap<Integer, EventListener> listeners =
 			new HashMap<Integer, EventListener>();
 	
-	public static ArrayList<Trigger> triggerList = new ArrayList<Trigger>();
+	private static ArrayList<Trigger> triggerList = new ArrayList<Trigger>();
 	
 	public static void process(Event event) {
-		try { listeners.get(event.getID()).pullTriggers(event); }
-		catch (NullPointerException e) {}
+		EventListener l = listeners.get(event.getID());
+		if(l != null) l.pullTriggers(event);
 	}
 	
 	public static void subscribe (Trigger trigger) {
-		try { listeners.get(trigger.causeID).subscribe(trigger); }
-		catch (NullPointerException e) {
-			addListener(trigger.causeID);
-			listeners.get(trigger.causeID).subscribe(trigger);
-		}
+		EventListener listener = listeners.get(trigger.causeID);
+		if(listener == null)
+			addListener(listener = new EventListener(trigger.causeID));
+		listener.subscribe(trigger);
 	}
 	
-	
-	public static void addListener(int eventID) {
-		if (!listeners.containsKey(eventID)) {
-			listeners.put(eventID, new EventListener(eventID));
-		}
+	public static void addListener(EventListener listener) {
+		if(!listeners.containsKey(listener.eventID))
+			listeners.put(listener.eventID, listener);
 	}
 	
 	public static void addTrigger(Trigger trigger) {
