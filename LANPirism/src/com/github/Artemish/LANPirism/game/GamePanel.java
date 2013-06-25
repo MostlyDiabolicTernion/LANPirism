@@ -19,9 +19,6 @@ public class GamePanel extends JPanel {
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.drawRect(10,10, pixels, pixels);
-		pixels++;
-		
 		
 	}
 	

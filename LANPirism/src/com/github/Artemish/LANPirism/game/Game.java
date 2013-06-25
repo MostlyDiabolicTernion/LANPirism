@@ -2,6 +2,7 @@ package com.github.Artemish.LANPirism.game;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -31,8 +32,6 @@ public class Game implements Runnable {
 	
 	public int gameTimeSeconds = 0;
 	
-	public GameApplet gameApplet;
-	
 	public GamePanel gameWindow;
 	
 	public Map gameMap;
@@ -41,12 +40,16 @@ public class Game implements Runnable {
 	
 	public Player controller;
 	
+	public Graphics gameGraphics;
+	
     public Game() {
     	
     }
     
     public void start() {
     	running = true;
+    	initialize();
+    	System.out.println("Starting...");
     }
     
     public void stop() {
@@ -55,12 +58,11 @@ public class Game implements Runnable {
     
     @Override
 	public void run() {
+    	System.out.println("Beginning run cycle...");
 		double nsPerTick = 1000000000.0 / 60.0;
 		double unprocessedSteps = 0.0;
 		long lastTime = System.nanoTime();
 		long now;
-		
-		initialize();
 		
 		while (running) {
 			now = System.nanoTime();
@@ -76,21 +78,20 @@ public class Game implements Runnable {
 			try { Thread.sleep(2);}
 			catch (InterruptedException e) {e.printStackTrace();}
 			
-			gameWindow.repaint();
+			render();
 			
 		}
 	}
     
-    public void registerWindow(GamePanel gameWindow) {
-    	this.gameWindow = gameWindow;   	
-    }
-    
     public void initialize()  {
+    	controller = new Player(0,0, 2000, 2000);
     	
     	try { gameMap = MapLoader.loadMap("Resources/map.txt"); }
     	catch (IOException e) { e.printStackTrace(); }
         
     	gameUI = new UI("LowerUI.png", "UpperUI.png");
+    	
+    	gameGraphics = gameWindow.getGraphics();
     	
     	EventHub.addTrigger(new Trigger(1, new SystemPrintAction("Still works.")));
     	EventHub.addTrigger(new Trigger(2, new ZoomInAction(gameMap)));
@@ -103,8 +104,12 @@ public class Game implements Runnable {
     }
     
     public void render() {
+    	gameMap.render(gameGraphics, controller);
     	
     	
+    	
+    	
+    	gameWindow.repaint();
     }
     
     public static void keyPressed(int key, char c) {}
@@ -112,7 +117,7 @@ public class Game implements Runnable {
     
 	
 	public void initializeWindow() {
-        JFrame frame = new JFrame("LANPirism!");
+        JFrame frame = new JFrame(NAME);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JLabel topGUI = new JLabel("Here's the top part of the GUI.");
@@ -138,11 +143,12 @@ public class Game implements Runnable {
     	javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 game.initializeWindow();
+                game.start();
+            	new Thread(game).start();
             }
         });
     	
-    	game.start();
-    	game.run();
+    	
     }
     
     
